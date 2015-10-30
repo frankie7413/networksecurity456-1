@@ -1,0 +1,5 @@
+# Disable the memory randomization protection
+sudo sysctl -w kernel.randomize_va_space=0
+
+# Do not use compiler's protection against buffer overflows
+g++ -g -fno-stack-protector -z execstack vuln.cpp -o vuln
