@@ -29,7 +29,7 @@ is called a binder.
 #Part I
 In order to complete this part you will need a Windows 7 VM which you can nd on your
 security lab node.
- 1. Boot your VM.
+ 1. Boot your VM. 
  2. Download the http://www.7-zip.org compression program.
  3. Launch the installer and follow the installation instructions.
  4. Download the worm.bat le from one of the earlier demos given in class. The le can be found on Titanium. Recall, the le illustrates a very simple Windows worm which can hang your system.
@@ -41,9 +41,9 @@ security lab node.
  10. In the terminal window that appears, enter the following command: copy /B <gif file name> + <7z file name> result. For example, copy /B mygifile.gif + myzipfile.7z result.
  11. The above command should have created a le called result in the same directory.
  12. Rename the result le to result.7z (i.e., append the 7z extension).
- 13. Try opening the le using the 7-zip program. What happens? (Note: one way to open the le using the 7-zip program is to right-click on result.7z and choose 7-zip ! Open archive. What happens? Are you able to extract and run the worm.bat le inside the archive?
+ 13. Try opening the le using the 7-zip program. What happens? (Note: one way to open the le using the 7-zip program is to right-click on result.7z and choose 7-zip ! Open archive. What happens? Are you able to extract and run the worm.bat le inside the archive? NO, show as it is not an archive
  14. Repeat the above steps, but this time rename the le to result.gif extension.
- 15. Try opening the le. What happens?
+ 15. Try opening the le. What happens? It runs the gif file
  
  ### Question to answers
  * Explain what is happening. Do some research in order to nd out what the above copy command does. In your explanation be sure to explain the role of each argument in the above command. Also, be sure to explain how Windows handles les which leads to the above behavior. Include the answers to these questions in the README le you submit.
