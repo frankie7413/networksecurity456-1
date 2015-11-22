@@ -44,7 +44,7 @@ int main()
 	 	 * @arg4 - the file to which to write the bytes
 	 	 * The function returns the number of bytes written to the file or -1 on error
 	 	 */
-		if(fwrite(codearray, sizeof(codearray[progCount]), sizeof(programLengths[progCount]), fp) < 0)
+		if(fwrite(codearray, sizeof(codearray[progCount]), sizeof(codearray), fp) < 0)
 		{
 			perror("fwrite");
 			exit(-1);
