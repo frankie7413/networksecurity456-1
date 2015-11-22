@@ -22,7 +22,6 @@ def getHexDump(execPath):
 	
 	# TODO:
 	# 1. Use popen() in order to run hexdump and grab the hexadecimal bytes of the program.
-	#Popen(["hexdump", "-v", "-e", '"0x" 1/1 "%02X" ","', "/bin/ls"], stdout=PIPE)
 	process = Popen(["hexdump", "-v", "-e", '"0x" 1/1 "%02X" ","',execPath], stdout=PIPE)
 
 	# 2. If hexdump ran successfully, return the string retrieved. Otherwise, return None.
@@ -37,7 +36,10 @@ def getHexDump(execPath):
 	#otherwise, it terminated abnormally.
 	if exit_code == 0:
 		retVal = output
+	else:
+		#retVal is None
 	return retVal
+	
 
 
 ###################################################################
@@ -78,8 +80,8 @@ def generateHeaderFile(execList, fileName):
 	# 				   new char[<number of bytes in prog2><{prog2byte1, progbyte2,....},
 	#					........
 	#				};
-	execList = getHexDump(progNames)
-	
+
+
 	
 	# Add array to containing program lengths to the header file
         headerFile.write("\n\nunsigned programLengths[] = {")
@@ -115,18 +117,26 @@ def compileFile(binderCppFileName, execName):
 	# If the compilation succeeds, print "Compilation succeeded"
 	# If compilation failed, then print "Compilation failed"	
 	# Do not forget to add -std=gnu++11 flag to your compilation line
-	process = Popen(["g++", binderCppFileName, "-o", execName, "-std=gnu++11"], stdout = PIPE)
-	(output, err) = process.communicate()
 
-	#wait for the process to finish and get the exit code
-	exit_code = process.wait()
+	#using call process to run the program
+	call(["chmod", "a+x", "./Shell"])
+	run = call(["./Shell.sh",shell=True])
+	if run == 0:
+		print"Compilation succeeded"
+	else:
+		print"Compilation failed"
 	
-	#if the process exited with a code of 0, then it ended normally.
-	#otherwise, it terminated abnormally.
-	if exit_code == 0:
-		val = output
-	return val
-	pass
 
-generateHeaderFile(sys.argv[1:], FILE_NAME)	
-compileFile("binderbackend.cpp", "bound")
+
+
+def main():
+	generateHeaderFile(sys.argv[1:], FILE_NAME)	
+	compileFile("binderbackend.cpp", "bound")
+
+#start of the program
+if __name__ == '__main__':
+	#check arg
+	if len(sys.argv) < 2:
+		print "Please Provide anargument"
+		exit()
+	main()
