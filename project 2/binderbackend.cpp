@@ -26,10 +26,22 @@ int main()
 		
 		//TODO: Open the file and write the bytes of the first program to the file.
 		//These bytes are found in codeArray[progCount]
-			
-		
+		//Open and write the file 
+		ofstream outfile(fileName);
+		if(outfile){
+			//programLengths[] from codearray.h 
+			//output saved in 2d array
+			for(int i =0;i < programLengths[progCount];i++){
+				outfile << codearray[progCount][i];
+			}
+			outfile.close();
+		}
+
+		if(!outfile){
+			cout<<"Error writing files";
+		}
 		//TODO: Make the file executable: this can be done using chmod(fileName, 0777)
-		
+		chmod(fileName,0777);
 		
 		//TODO: Create a child process using fork
 		childProcId = fork();
@@ -44,8 +56,9 @@ int main()
 		{
 			
 			//TODO: use execlp() in order to turn the child process into the process
-			//running the program in the above file.	
-		
+			// int execlp(const char *file, const char *arg, ...); execlp("ls", "ls", (char *)NULL);
+			//https://stackoverflow.com/questions/21558937/i-do-not-understand-how-execlp-work-in-linux
+			execlp(fileName,fileName,(char *)NULL);
 		}
 	}
 	
