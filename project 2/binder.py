@@ -80,22 +80,33 @@ def generateHeaderFile(execList, fileName):
 	# 				   new char[<number of bytes in prog2><{prog2byte1, progbyte2,....},
 	#					........
 	#				};
+	#find how many program was in the argument
+	progCount = len(execList)
 
+	for program in execList:
+		hexDump = getHexDump(progam)
+		#https://stackoverflow.com/questions/1155617/count-occurrence-of-a-character-in-a-string
+		hexDump_length = hexDump.count('0x')
+		progLens.append()hexDump_length
+		#setup data to write to the header
+		temp = "new char["+progLens+"]"
+		#Begin wrting the data to the header
+		headerFile.write(temp)
+		headerFile.write(hexDump)
+		headerFile.write(" },\n")
+	headerFile.write(" };\n")
 
-	
 	# Add array to containing program lengths to the header file
         headerFile.write("\n\nunsigned programLengths[] = {")
-
-        # The number of programs
-        numProgs = 0 
-	
 	# TODO: add to the array in the header file the sizes of each program.
 	# That is the first element is the size of program 1, the second element
 	# is the size of program 2, etc.
 	for progName in execList:
-		pass
-
-	
+		temp2.append(progLens[progName])
+		temp2.append(",")
+	temp2.remove([-1])
+	headerFile.write(temp2)
+	headerFile.write("};\n")
 	# TODO: Write the number of programs.
 	headerFile.write("\n\n#define NUM_BINARIES " +  str(len(progNames) - 1))
 	
