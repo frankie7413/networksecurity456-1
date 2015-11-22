@@ -4,8 +4,8 @@ from subprocess import Popen, PIPE
 
 # Run the ls command
 #hexdump -v -e '"0x" 1/1 "%02X" ","' /bin/ls
-execPath = "/bin/ls"
-process = Popen(["hexdump", "-v", "-e", '"0x" 1/1 "%02X" ","', execPath], stdout=PIPE)
+execPath = /bin/ls
+process = Popen(["hexdump", "-v", "-e", '"0x" 1/1 "%02X" ","', "execPath"], stdout=PIPE)
 
 # Grab the stdout and the stderr streams
 (output, err) = process.communicate()
