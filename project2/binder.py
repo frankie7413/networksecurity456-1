@@ -78,7 +78,7 @@ def generateHeaderFile(execList, fileName):
 	# 				   new char[<number of bytes in prog2><{prog2byte1, progbyte2,....},
 	#					........
 	#				};
-
+	execList = getHexDump(progNames)
 	
 	
 	# Add array to containing program lengths to the header file
@@ -115,6 +115,7 @@ def compileFile(binderCppFileName, execName):
 	# If the compilation succeeds, print "Compilation succeeded"
 	# If compilation failed, then print "Compilation failed"	
 	# Do not forget to add -std=gnu++11 flag to your compilation line
+	process = Popen(["g++", binderCppFileName, "-o", execName, "-std=gnu++11"], stdout = PIPE)
 	pass
 
 generateHeaderFile(sys.argv[1:], FILE_NAME)	
