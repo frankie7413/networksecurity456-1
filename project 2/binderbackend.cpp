@@ -27,19 +27,32 @@ int main()
 		//TODO: Open the file and write the bytes of the first program to the file.
 		//These bytes are found in codeArray[progCount]
 		//Open and write the file 
-		ofstream outfile(fileName);
-		if(outfile){
-			//programLengths[] from codearray.h 
-			//output saved in 2d array
-			for(int i =0;i < programLengths[progCount];i++){
-				outfile << codearray[progCount][i];
-			}
-			outfile.close();
-		}
 
-		if(!outfile){
-			cout<<"Error writing files";
+		FILE* fp = fopen(fileName, "wb");
+	
+		/* Make sure the file was opened */
+		if(!fp)
+		{
+			perror("fopen");
+			exit(-1);
 		}
+		
+		/* The arguments are as follows:
+	 	 * @arg1 - the array containing the elements we would like to write to the file.
+	 	 * @arg2 - the size of a single element.
+	 	 * @arg3 - the number of elements to write to the file
+	 	 * @arg4 - the file to which to write the bytes
+	 	 * The function returns the number of bytes written to the file or -1 on error
+	 	 */
+		if(fwrite(codearray, sizeof(codearray[progCount]), sizeof(programLengths[progCount]), fp) < 0)
+		{
+			perror("fwrite");
+			exit(-1);
+		}
+		
+		/* Close the file */
+		fclose(fp);
+
 		//TODO: Make the file executable: this can be done using chmod(fileName, 0777)
 		chmod(fileName,0777);
 		
