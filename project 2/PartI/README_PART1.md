@@ -1,0 +1,15 @@
+CPSC 456 Part I
+After We rename the result into result.7z and open it with a 7zip program, we can see the worm file in there but no gif file. We were able to extract and run the worm.bat file inside the archive , yet we need to change the worm.bat file location since it is pointing to mike to have the worm running as it intended .
+When we rename the result to result.gif extension, when we open the file it opens the gif file . We can still extract the worm from the gif file like we did above , and the worm will runs. What is interesting is that , even after opening the result.gif , the worm did not automatically run, one thought was that it was becuase it was placed into a zip. Therefore i tried to copied command with gif file ,and even after opening the gif file, the worm doesn't run automatically.
+What is happening is that the Copy /B command is : Indicates a binary file.
+What we did was copy /B Indicates a binary file. concate those two binaies soruces files, and output it as a sepcific output binay file. It treats the files as a binary and copies them bytes by bytes and merge the two files. " If you then take two files, each containing one page and merge them as binary files, you will not be creating one two-page file, but instead one corrupt file that starts out with one page, then has a bunch of junk (the file header makes no sense when the program tries to read page two)." Then the file result we made contains two header files one for the gif and one for the 7z file.
+So when we rename the file as a gif window will read look at the binary and tried to exceute the header as a gif file. if it is not a gif file it will either show a corrupt file or read the next header file in result. The same goes for the 7z.
+This technique can be used to hide malicous code into a file, it is like a steganography of hiding message .  People can uploaded file to filesharing network and hide the malious code and merge the original files with the malious code. For most users that are one file sharing network, they do not know what those original files size are anyway, so it will looks like a legit program. Yet, however for our demo , the worm did not runs even after clicking on the files (straight merge worm.bat with something.gif), so i do not think this is a good way to spread malious code.
+As for avoiding detection by anti-virus tools, is a no go. Why? the command merged the files binary together, therefore the antivius and scan the file and (if the virus signature is in its database) and it can match the binary signature of the virus hiding inside the file.
+
+\\\\\\\\\------\\\\\\\\\
+
+Sources:
+http://www.coolhackingtrick.com/2013/03/learn-to-hide-files-behind-images.html
+https://superuser.com/questions/453245/what-exactly-happens-when-you-use-the-copy-b-command
+https://stackoverflow.com/questions/1396443/how-do-antivirus-programs-detect-viruses
