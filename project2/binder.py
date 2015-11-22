@@ -116,6 +116,16 @@ def compileFile(binderCppFileName, execName):
 	# If compilation failed, then print "Compilation failed"	
 	# Do not forget to add -std=gnu++11 flag to your compilation line
 	process = Popen(["g++", binderCppFileName, "-o", execName, "-std=gnu++11"], stdout = PIPE)
+	(output, err) = process.communicate()
+
+	#wait for the process to finish and get the exit code
+	exit_code = process.wait()
+	
+	#if the process exited with a code of 0, then it ended normally.
+	#otherwise, it terminated abnormally.
+	if exit_code == 0:
+		val = output
+	return val
 	pass
 
 generateHeaderFile(sys.argv[1:], FILE_NAME)	
