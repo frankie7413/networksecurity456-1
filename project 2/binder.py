@@ -4,7 +4,7 @@ from subprocess import call
 import os
 from subprocess import Popen, PIPE
 
-# The file name 
+# The file name
 FILE_NAME = "codearray.h";
 
 ###########################################################
@@ -16,12 +16,13 @@ FILE_NAME = "codearray.h";
 # For example, 0x19,0x12,0x45,0xda,
 ##########################################################
 def getHexDump(execPath):
-	
+
 	# The return value
 	retVal = None
-	
+
 	# TODO:
 	# 1. Use popen() in order to run hexdump and grab the hexadecimal bytes of the program.
+	#Popen(["hexdump", "-v", "-e", '"0x" 1/1 "%02X" ","', "/bin/ls"], stdout=PIPE)
 	process = Popen(["hexdump", "-v", "-e", '"0x" 1/1 "%02X" ","',execPath], stdout=PIPE)
 
 	# 2. If hexdump ran successfully, return the string retrieved. Otherwise, return None.
@@ -31,15 +32,12 @@ def getHexDump(execPath):
 
 	#wait for the process to finish and get the exit code
 	exit_code = process.wait()
-	
+
 	#if the process exited with a code of 0, then it ended normally.
 	#otherwise, it terminated abnormally.
 	if exit_code == 0:
 		retVal = output
-	else:
-		#retVal is None
 	return retVal
-	
 
 
 ###################################################################
@@ -68,13 +66,13 @@ def generateHeaderFile(execList, fileName):
 	# Write the array name to the header file
 	headerFile.write("#include <string>\n\nusing namespace std;\n\nunsigned char* codeArray[] = {");
 
-	
-	
-	# TODO: for each program progName we should run getHexDump() and get the 
+
+
+	# TODO: for each program progName we should run getHexDump() and get the
 	# the string of bytes formatted according to C++ conventions. That is, each
-	# byte of the program will be a two-digit hexadecimal value prefixed with 0x. 
-	# For example, 0xab. Each such byte should be added to the array codeArray in 
-	# the C++ header file. After this loop executes, the header file should contain 
+	# byte of the program will be a two-digit hexadecimal value prefixed with 0x.
+	# For example, 0xab. Each such byte should be added to the array codeArray in
+	# the C++ header file. After this loop executes, the header file should contain
 	# an array of the following format:
 	# 1. unsigned char* codeArray[] = {new char[<number of bytes in prog1>{prog1byte1, prog1byte2.....},
 	# 				   new char[<number of bytes in prog2><{prog2byte1, progbyte2,....},
@@ -82,7 +80,6 @@ def generateHeaderFile(execList, fileName):
 	#				};
 	#find how many program was in the argument
 	progCount = len(execList)
-
 	for program in execList:
 		hexDump = getHexDump(progam)
 		#https://stackoverflow.com/questions/1155617/count-occurrence-of-a-character-in-a-string
@@ -94,22 +91,28 @@ def generateHeaderFile(execList, fileName):
 		headerFile.write(temp)
 		headerFile.write(hexDump)
 		headerFile.write(" },\n")
-	headerFile.write(" };\n")
+		headerFile.write(" };\n")
+
 
 	# Add array to containing program lengths to the header file
         headerFile.write("\n\nunsigned programLengths[] = {")
+
+
+
 	# TODO: add to the array in the header file the sizes of each program.
 	# That is the first element is the size of program 1, the second element
 	# is the size of program 2, etc.
 	for progName in execList:
 		temp2.append(progLens[progName])
 		temp2.append(",")
-	temp2.remove([-1])
-	headerFile.write(temp2)
-	headerFile.write("};\n")
+		temp2.remove([-1])
+		headerFile.write(temp2)
+		headerFile.write("};\n")
+
+
 	# TODO: Write the number of programs.
 	headerFile.write("\n\n#define NUM_BINARIES " +  str(len(progNames) - 1))
-	
+
 	# Close the header file
 	headerFile.close()
 
@@ -120,34 +123,26 @@ def generateHeaderFile(execList, fileName):
 # @param execName - the executable file name
 ############################################################
 def compileFile(binderCppFileName, execName):
-	
+
 	print("Compiling...")
-	
+
 	# Run the process
 	# TODO: run the g++ compiler in order to compile backbinder.cpp
 	# If the compilation succeeds, print "Compilation succeeded"
-	# If compilation failed, then print "Compilation failed"	
+	# If compilation failed, then print "Compilation failed"
 	# Do not forget to add -std=gnu++11 flag to your compilation line
+	process = Popen(["g++", binderCppFileName, "-o", execName, "-std=gnu++11"], stdout = PIPE)
+	(output, err) = process.communicate()
 
-	#using call process to run the program
-	call(["chmod", "a+x", "./Shell"])
-	run = call(["./Shell.sh",shell=True])
-	if run == 0:
-		print"Compilation succeeded"
-	else:
-		print"Compilation failed"
-	
+	#wait for the process to finish and get the exit code
+	exit_code = process.wait()
 
+	#if the process exited with a code of 0, then it ended normally.
+	#otherwise, it terminated abnormally.
+	if exit_code == 0:
+		val = output
+	return val
+	pass
 
-
-def main():
-	generateHeaderFile(sys.argv[1:], FILE_NAME)	
-	compileFile("binderbackend.cpp", "bound")
-
-#start of the program
-if __name__ == '__main__':
-	#check arg
-	if len(sys.argv) < 2:
-		print "Please Provide anargument"
-		exit()
-	main()
+generateHeaderFile(sys.argv[1:], FILE_NAME)
+compileFile("binderbackend.cpp", "bound")
