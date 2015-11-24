@@ -51,74 +51,99 @@ def getHexDump(execPath):
 
 def generateHeaderFile(execList, fileName):
 
-	# The header file
-	headerFile = None
+    # The header file
+    headerFile = None
 
-	# The program array
-	progNames = sys.argv
+    # The program array
+    progNames = sys.argv
 
-	# Open the header file
-	headerFile = open(fileName, "w")
+    # Open the header file
+    headerFile = open(fileName, "w")
 
-	# The program index
-	progCount = 0
+    # The program index
+    progCount = 0
 
-	# The lengths of programs
-	progLens = []
+    # The lengths of programs
+    progLens = []
 
-	# Write the array name to the header file
-	headerFile.write("#include <string>\n\nusing namespace std;\n\nunsigned char* codeArray[] = {");
+    # Write the array name
+    headerFile.write("#include <string>\n\nusing namespace std;\n\nunsigned char* codeArray[] = {");
+
+    # Go through the program names
+    for progName in execList:
+    
+        # Count the program
+        progCount += 1
+    
+        print("Generating a hexdump of", progName,)    
+        # Generate the hex code
+        hexCode = getHexDump(progName)
+    
+        print("Done!")
+    
+        
+        # Failed to get hex dump for the program
+        if not hexCode:
+            print("Invalid path for program " + progName)
+            
+            # Close the file
+            headerFile.close()
+        
+            # Remove the file
+            os.remove(FILE_NAME)
+        
+            # Exit abnormally
+            exit(1)
+    
+        # Remove the last comma
+        if len(hexCode) > 0:
+            hexCode = hexCode.decode("utf-8").rstrip(",")
+    
+        # Get the program length
+        programLength = len(hexCode.split(","))
+        
+        # Save the program length
+        progLens.append(str(programLength))
+        
+        # Write the code surrounded by quotes
+        headerFile.write("new unsigned char[" + str(programLength) + "]{" + hexCode + "}");
+            
+        # This is the last element -- insert the closing "}"
+        if progCount == len(execList):
+            headerFile.write("};")
+    
+        # This is not the last element
+        else:
+            # Add the ","
+            headerFile.write(",");
+    
+
+    # The array to contain program lengths
+    headerFile.write("\n\nunsigned programLengths[] = {")
+
+    # The number of programs
+    numProgs = 0
+
+    for progLen in progLens:
+    
+        # Increment the program
+        numProgs+=1
+    
+        headerFile.write(str(progLen))
+    
+        # If this is the last element add "}"
+        if numProgs == len(progLens):
+            headerFile.write("};")
+        # Otherwise, add a ","
+        else:
+            headerFile.write(",")
+    
 
 
-
-	# TODO: for each program progName we should run getHexDump() and get the
-	# the string of bytes formatted according to C++ conventions. That is, each
-	# byte of the program will be a two-digit hexadecimal value prefixed with 0x.
-	# For example, 0xab. Each such byte should be added to the array codeArray in
-	# the C++ header file. After this loop executes, the header file should contain
-	# an array of the following format:
-	# 1. unsigned char* codeArray[] = {new char[<number of bytes in prog1>{prog1byte1, prog1byte2.....},
-	# 				   new char[<number of bytes in prog2><{prog2byte1, progbyte2,....},
-	#					........
-	#				};
-	#find how many program was in the argument
-	progCount = len(execList)
-	for program in execList:
-		hexDump = getHexDump(program)
-		#https://stackoverflow.com/questions/1155617/count-occurrence-of-a-character-in-a-string
-		hexDump_length = hexDump.count('0x')
-		progLens.append(hexDump_length)
-		#setup data to write to the header
-		temp = "new char["+progLens+"]"
-		#Begin wrting the data to the header
-		headerFile.write(temp)
-		headerFile.write(hexDump)
-		headerFile.write(" },\n")
-		headerFile.write(" };\n")
-
-
-	# Add array to containing program lengths to the header file
-        headerFile.write("\n\nunsigned programLengths[] = {")
-
-
-
-	# TODO: add to the array in the header file the sizes of each program.
-	# That is the first element is the size of program 1, the second element
-	# is the size of program 2, etc.
-	for progName in execList:
-		temp2.append(progLens[progName])
-		temp2.append(",")
-		temp2.remove([-1])
-		headerFile.write(temp2)
-		headerFile.write("};\n")
-
-
-	# TODO: Write the number of programs.
-	headerFile.write("\n\n#define NUM_BINARIES " +  str(len(progNames) - 1))
-
-	# Close the header file
-	headerFile.close()
-
+    # Write the number of programs
+    headerFile.write("\n\n#define NUM_BINARIES " +  str(len(execList)))
+    
+    headerFile.close()
 
 ############################################################
 # Compiles the combined binaries
