@@ -4,6 +4,8 @@ from subprocess import call
 import os
 from subprocess import Popen, PIPE
 
+#running the file 
+#python binder.py /usr/bin/ls /usr/bin/pwd
 # The file name
 FILE_NAME = "codearray.h";
 
@@ -35,6 +37,7 @@ def getHexDump(execPath):
 
 	#if the process exited with a code of 0, then it ended normally.
 	#otherwise, it terminated abnormally.
+	print retVal
 	if exit_code == 0:
 		retVal = output
 	return retVal
@@ -81,7 +84,7 @@ def generateHeaderFile(execList, fileName):
 	#find how many program was in the argument
 	progCount = len(execList)
 	for program in execList:
-		hexDump = getHexDump(progam)
+		hexDump = getHexDump(program)
 		#https://stackoverflow.com/questions/1155617/count-occurrence-of-a-character-in-a-string
 		hexDump_length = hexDump.count('0x')
 		progLens.append(hexDump_length)
