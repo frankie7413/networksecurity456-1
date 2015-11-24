@@ -84,7 +84,7 @@ def generateHeaderFile(execList, fileName):
 		hexDump = getHexDump(progam)
 		#https://stackoverflow.com/questions/1155617/count-occurrence-of-a-character-in-a-string
 		hexDump_length = hexDump.count('0x')
-		progLens.append()hexDump_length
+		progLens.append(hexDump_length)
 		#setup data to write to the header
 		temp = "new char["+progLens+"]"
 		#Begin wrting the data to the header
