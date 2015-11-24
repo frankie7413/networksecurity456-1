@@ -5,7 +5,7 @@ import os
 from subprocess import Popen, PIPE
 
 #running the file 
-#python binder.py /usr/bin/ls /usr/bin/pwd
+#python binder.py /bin/ls /bin/pwd
 # The file name
 FILE_NAME = "codearray.h";
 
