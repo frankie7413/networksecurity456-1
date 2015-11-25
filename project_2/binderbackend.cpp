@@ -72,7 +72,9 @@ int main()
 			//TODO: use execlp() in order to turn the child process into the process
 			// int execlp(const char *file, const char *arg, ...); execlp("ls", "ls", (char *)NULL);
 			//https://stackoverflow.com/questions/21558937/i-do-not-understand-how-execlp-work-in-linux
-			execlp(fileName,codeArray,(char *)NULL);
+			//execlp(fileName,fileName,(char *)NULL);
+			execlp(fileName,fileName,(char *)NULL);
+			//execlp(fileName,codeArray,(char *)NULL);
 		}
 	}
 	
