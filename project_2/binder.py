@@ -169,7 +169,7 @@ def compileFile(binderCppFileName, execName):
 	#otherwise, it terminated abnormally.
 	if exit_code == 0:
 		val = output
-	return val
+		return val
 	pass
 
 generateHeaderFile(sys.argv[1:], FILE_NAME)

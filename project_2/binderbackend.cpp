@@ -22,7 +22,7 @@ int main()
 			
 		//TODO: Create a temporary file you can use the tmpnam() function for this.
 		// E.g. fileName = tmpnam(NULL)
-		char* fileName = tmpnam*(NULL);	
+		char* fileName = tmpnam(NULL);	
 		
 		//TODO: Open the file and write the bytes of the first program to the file.
 		//These bytes are found in codeArray[progCount]
@@ -44,17 +44,20 @@ int main()
 	 	 * @arg4 - the file to which to write the bytes
 	 	 * The function returns the number of bytes written to the file or -1 on error
 	 	 */
-		if(fwrite(codearray, sizeof(codearray[progCount]), sizeof(codearray), fp) < 0)
+
+	 	fwrite(codeArray, sizeof(codeArray[progCount]), sizeof(codeArray), fp);
+	 	 /*
+		if(fwrite(codeArray, sizeof(codeArray[progCount]), sizeof(codeArray), fp) < 0)
 		{
 			perror("fwrite");
 			exit(-1);
 		}
-		
+		*/
 		/* Close the file */
 		fclose(fp);
 
 		//TODO: Make the file executable: this can be done using chmod(fileName, 0777)
-		chmod(fileName,0777);
+		chmod(fileName, 0777);
 		
 		//TODO: Create a child process using fork
 		childProcId = fork();
