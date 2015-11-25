@@ -32,6 +32,7 @@ def getHexDump(execPath):
 	# the command is hexdump -v -e '"0x" 1/1 "%02X" ","' progName
 	(output, err) = process.communicate()
 
+	print output
 	#wait for the process to finish and get the exit code
 	exit_code = process.wait()
 

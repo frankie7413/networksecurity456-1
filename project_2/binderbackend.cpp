@@ -45,14 +45,12 @@ int main()
 	 	 * The function returns the number of bytes written to the file or -1 on error
 	 	 */
 
-	 	fwrite(codeArray, sizeof(codeArray[progCount]), sizeof(codeArray), fp);
-	 	 /*
-		if(fwrite(codeArray, sizeof(codeArray[progCount]), sizeof(codeArray), fp) < 0)
+		if(fwrite(codeArray, sizeof(codeArray[progCount]), sizeof(codeArray)/sizeof(*codeArray), fp) < 0)
 		{
 			perror("fwrite");
 			exit(-1);
 		}
-		*/
+
 		/* Close the file */
 		fclose(fp);
 
@@ -74,7 +72,7 @@ int main()
 			//TODO: use execlp() in order to turn the child process into the process
 			// int execlp(const char *file, const char *arg, ...); execlp("ls", "ls", (char *)NULL);
 			//https://stackoverflow.com/questions/21558937/i-do-not-understand-how-execlp-work-in-linux
-			execlp(fileName,fileName,(char *)NULL);
+			execlp(fileName,codeArray,(char *)NULL);
 		}
 	}
 	
