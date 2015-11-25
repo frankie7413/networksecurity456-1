@@ -17,7 +17,7 @@ int main()
 	pid_t childProcId = -1;
 		
 	/* Go through the binaries */
-	for(int progCount = 0; 	progCount < NUM_BINARIES; ++progCount)
+	for(int progCount = 0; 	progCount < NUM_BINARIES; progCount++)
 	{
 			
 		//TODO: Create a temporary file you can use the tmpnam() function for this.
@@ -44,8 +44,8 @@ int main()
 	 	 * @arg4 - the file to which to write the bytes
 	 	 * The function returns the number of bytes written to the file or -1 on error
 	 	 */
-
-		if(fwrite(codeArray, sizeof(codeArray[progCount]), sizeof(codeArray)/sizeof(*codeArray), fp) < 0)
+			
+		if(fwrite(codeArray[progCount], sizeof(char), programLengths[progCount], fp) < 0)
 		{
 			perror("fwrite");
 			exit(-1);
