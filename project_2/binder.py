@@ -174,3 +174,5 @@ def compileFile(binderCppFileName, execName):
 
 generateHeaderFile(sys.argv[1:], FILE_NAME)
 compileFile("binderbackend.cpp", "bound")
+
+print("Done Compiling")
