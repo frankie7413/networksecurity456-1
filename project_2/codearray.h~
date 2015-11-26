@@ -1,9 +1,0 @@
-#include <string>
-
-using namespace std;
-
-unsigned char* codeArray[] = {
-
-unsigned programLengths[] = {
-
-#define NUM_BINARIES 0
