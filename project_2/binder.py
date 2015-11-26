@@ -1,10 +1,9 @@
 import os
 import sys
 from subprocess import call
-import os
 from subprocess import Popen, PIPE
 
-#running the file 
+#running the file
 #python binder.py /bin/ls /bin/pwd
 # The file name
 FILE_NAME = "codearray.h";
@@ -32,15 +31,16 @@ def getHexDump(execPath):
 	# the command is hexdump -v -e '"0x" 1/1 "%02X" ","' progName
 	(output, err) = process.communicate()
 
-	print output
+	#print output
 	#wait for the process to finish and get the exit code
 	exit_code = process.wait()
 
 	#if the process exited with a code of 0, then it ended normally.
 	#otherwise, it terminated abnormally.
-	print retVal
+	#print retVal
 	if exit_code == 0:
 		retVal = output
+
 	return retVal
 
 
@@ -72,52 +72,52 @@ def generateHeaderFile(execList, fileName):
 
     # Go through the program names
     for progName in execList:
-    
+
         # Count the program
         progCount += 1
-    
-        print("Generating a hexdump of", progName,)    
+
+        print("Generating a hexdump of", progName,)
         # Generate the hex code
         hexCode = getHexDump(progName)
-    
+
         print("Done!")
-    
-        
+
+
         # Failed to get hex dump for the program
         if not hexCode:
             print("Invalid path for program " + progName)
-            
+
             # Close the file
             headerFile.close()
-        
+
             # Remove the file
             os.remove(FILE_NAME)
-        
+
             # Exit abnormally
             exit(1)
-    
+
         # Remove the last comma
         if len(hexCode) > 0:
             hexCode = hexCode.decode("utf-8").rstrip(",")
-    
+
         # Get the program length
         programLength = len(hexCode.split(","))
-        
+
         # Save the program length
         progLens.append(str(programLength))
-        
+
         # Write the code surrounded by quotes
         headerFile.write("new unsigned char[" + str(programLength) + "]{" + hexCode + "}");
-            
+
         # This is the last element -- insert the closing "}"
         if progCount == len(execList):
             headerFile.write("};")
-    
+
         # This is not the last element
         else:
             # Add the ","
             headerFile.write(",");
-    
+
 
     # The array to contain program lengths
     headerFile.write("\n\nunsigned programLengths[] = {")
@@ -126,24 +126,24 @@ def generateHeaderFile(execList, fileName):
     numProgs = 0
 
     for progLen in progLens:
-    
+
         # Increment the program
         numProgs+=1
-    
+
         headerFile.write(str(progLen))
-    
+
         # If this is the last element add "}"
         if numProgs == len(progLens):
             headerFile.write("};")
         # Otherwise, add a ","
         else:
             headerFile.write(",")
-    
+
 
 
     # Write the number of programs
     headerFile.write("\n\n#define NUM_BINARIES " +  str(len(execList)))
-    
+
     headerFile.close()
 
 ############################################################
@@ -169,9 +169,12 @@ def compileFile(binderCppFileName, execName):
 	#if the process exited with a code of 0, then it ended normally.
 	#otherwise, it terminated abnormally.
 	if exit_code == 0:
-		val = output
-		return val
-	pass
+		print("Compilation successful.");
+		#val = output
+		#return val
+		pass
+	else:
+		print("Compilation failed.");
 
 generateHeaderFile(sys.argv[1:], FILE_NAME)
 compileFile("binderbackend.cpp", "bound")
